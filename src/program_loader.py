@@ -11,7 +11,7 @@ ser = serial.Serial(PORT, BAUD, timeout=1)
 time.sleep(2)  # allow FPGA/FTDI to reset after connection
 
 # Read instructions from file
-with open('src/instruction_file.txt', 'r') as f:
+with open('instruction_file.txt', 'r') as f:
     instructions = f.readlines()
 
 # Send each instruction byte by byte
@@ -20,8 +20,8 @@ for line in instructions:
     if line:
         # Convert 25-bit binary string to integer
         instr_int = int(line, 2)
-        # Convert to 4 bytes (little-endian, LSB first)
-        bytes_to_send = instr_int.to_bytes(4, byteorder='little')
+        # Convert to 4 bytes (big-endian, MSB first)
+        bytes_to_send = instr_int.to_bytes(4, byteorder='big')
         # Send each byte
         for b in bytes_to_send:
             ser.write(bytes([b]))
