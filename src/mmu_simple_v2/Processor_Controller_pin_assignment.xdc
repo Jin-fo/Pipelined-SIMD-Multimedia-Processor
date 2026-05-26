@@ -102,12 +102,11 @@ set_input_delay 0 -clock sys_clk [get_ports {enable}]
 set_input_delay 0 -clock sys_clk [get_ports {rst_bar}]
 set_input_delay 0 -clock sys_clk [get_ports {reg_pos[*]}]
 set_input_delay 0 -clock sys_clk [get_ports {rx}]
-
+set_input_delay 0 -clock sys_clk [get_ports {reg_tog}]
 
 ## ============================================================
 ## Output delay placeholders (safe defaults)
 ## ============================================================
-set_output_delay 0 -clock sys_clk [get_ports {reg_tog}]
 set_output_delay 0 -clock sys_clk [get_ports {reg_value[*]}]
 set_output_delay 0 -clock sys_clk [get_ports {uart}]
 set_output_delay 0 -clock sys_clk [get_ports {loaded}]
