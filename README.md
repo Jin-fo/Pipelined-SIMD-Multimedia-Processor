@@ -4,11 +4,17 @@
 <div align="center">
 
 [![HDL - VHDL](https://img.shields.io/badge/HDL-VHDL-blue?style=for-the-badge)](https://en.wikipedia.org/wiki/VHDL)
-[![Design - RTL](https://img.shields.io/badge/Design-RTL-purple?style=for-the-badge)](https://en.wikipedia.org/wiki/Register-transfer_level)
 [![Pipeline - 4%20Stage](https://img.shields.io/badge/Pipeline-4%20Stage-teal?style=for-the-badge)](https://en.wikipedia.org/wiki/Instruction_pipelining)
+[![FPGA - Artix-7](https://img.shields.io/badge/FPGA-Artix--7-red?style=for-the-badge)](https://www.xilinx.com/products/silicon-devices/fpga/artix-7.html)
+[![Board - Basys3](https://img.shields.io/badge/Board-Basys3-green?style=for-the-badge)](https://digilent.com/reference/programmable-logic/basys-3/start)
 [![Tool - Vivado](https://img.shields.io/badge/Tool-Vivado-orange?style=for-the-badge)](https://www.xilinx.com/products/design-tools/vivado.html)
+<<<<<<< HEAD
+[![Sim - RTL](https://img.shields.io/badge/Sim-RTL-gray?style=for-the-badge)](https://en.wikipedia.org/wiki/Logic_simulation)
+[![Verify - Passed](https://img.shields.io/badge/Verify-Passed-76B900?style=for-the-badge)](https://en.wikipedia.org/wiki/Testbench)
+[![Loader - USART](https://img.shields.io/badge/Loader-USART-brightgreen?style=for-the-badge)](rtl/mmu_simple_v2/USART_Unit_VHDL/USART_unit.vhd)
+=======
 [![FPGA - RTL%20Simulation](https://img.shields.io/badge/FPGA-RTL%20Simulation-gray?style=for-the-badge)](https://en.wikipedia.org/wiki/Logic_simulation)
-[![Repo - GitHub](https://img.shields.io/badge/Repo-GitHub-black?style=for-the-badge)](https://github.com/)
+>>>>>>> 7acc525 (Update README.md)
 
 **May 2026 | Jin Yuan Chen**
 
@@ -32,7 +38,7 @@ This repository contains an RTL implementation of a **four-stage pipelined multi
 - **EX**: multimedia execution unit (MMU/ALU)
 - **WB**: write-back to the register file
 
-The emphasis is on **structural composition**, deterministic stage boundaries via **inter-stage registers**, and **module-level testbenches** so each block can be verified before full top-level integration.
+The emphasis is on **verification-first RTL development**: each stage/block has a dedicated testbench, then the full IF→ID→EX→WB pipeline is validated end-to-end with a top-level integration test. The `mmu_simple_v2` flow also supports **terminal-programmable instruction loading** via **UART-over-JTAG**.
 
 ---
 
@@ -65,38 +71,28 @@ Multimedia_Processor_Unit (top)
 
 ---
 
-## Diagrams
+## RTL design logic
 
-### Synthesis / RTL view (Synopsys)
-![Synopsys RTL](docs/diagrams/synposis_rtl.png)
-> Synthesis-oriented RTL hierarchy view showing the main instantiated blocks and top-level connectivity.
+This section summarizes the implementation as documented in the course report: [`docs/datasheets/ESE345_Project_Report_2.pdf`](docs/datasheets/ESE345_Project_Report_2.pdf).
 
-### Forwarding verification (waveforms)
-![Forwarding waveform](docs/images/Forward_to_ALU.png)
-> Simulation waveform showing WB→EX forwarding in action (operand matches `wb_rd_ptr`, forwarded data aligns with the write-back value).
-
-![Write-back waveform](docs/images/Register_Write_Back.png)
-> Simulation waveform illustrating write-back behavior and destination register updates across pipeline stages.
-
----
-
-## RTL block notes (what each block does)
+### `pc` + `instruction_file` — Instruction fetch (IF stage)
+The program counter increments on each enabled rising clock edge and addresses a 64-deep instruction store to fetch a 25-bit instruction word into the IF/ID register. A practical convention used in the documentation is to keep the last instruction as a **NOP** to avoid unintended behavior once the PC reaches its max count.
 
 ### `decoder` — Instruction field decode (ID stage)
-Extracts the **opcode**, register pointers (`rs*`, `rd`), immediates, and control signals (notably **write-back enable**) from the fetched instruction word.
+Parses the 25-bit instruction into the **opcode**, register pointers (`rs*`, `rd`), 16-bit immediate, and control signals (notably **write-back enable**) for the downstream register file / execute stage.
 
 ### `register_file` — SIMD register file (ID/WB boundary)
 Implements the processor’s register storage and access patterns:
 
-- **ID read**: supplies `rs1/rs2/rs3` operand vectors into the pipeline
-- **WB write**: writes `rd` on `wb_wback`
-- **Debug readout**: exposes a “probe” style interface (e.g., `reg_tog`, address/segment selection) for observing register contents
+- **ID read**: supplies 128-bit `rs1/rs2/rs3` operand vectors (32 registers × 128-bit)
+- **WB write**: commits `rd` on `wb_wback` (via the EX/WB stage register)
+- **Debug readout**: exposes a probe-style interface (e.g., `reg_tog`, address/segment selection) to observe register contents
 
 ### `if_id`, `id_ex`, `ex_wb` — Inter-stage pipeline registers
-Each stage boundary is captured by a dedicated register module to preserve deterministic timing and isolate combinational logic between stages.
+Buffers each clock cycle between pipeline stages (IF/ID, ID/EX, EX/WB). This enforces deterministic stage boundaries and prevents long combinational paths.
 
 ### `forward` — WB→EX hazard bypass
-Compares operand pointers in EX against the destination pointer in WB and, when `wb_wback = '1'`, forwards the newest `wb_rd` value into EX operands (e.g., `fw_rs*`).
+Compares EX source pointers (`ex_rs*_ptr`) against the WB destination pointer (`wb_rd_ptr`) and, when `wb_wback = '1'`, forwards the newest `wb_rd` into the EX operands (`fw_rs*`) to avoid RAW hazards.
 
 ### `mmu` — Multimedia execution core (EX stage)
 Dispatches instruction behavior based on opcode groups. In `mmu_simple_v2`, the EX logic delegates to procedure packages such as:
@@ -109,42 +105,25 @@ This keeps the EX datapath readable while allowing the instruction set to be ext
 
 ---
 
-## RTL variants (`mmu_simple_v1` vs `mmu_simple_v2`)
+## Synthesis & verification
 
-Both variants implement the same high-level 4-stage pipeline concept, but differ in integration details.
+### Verification (waveforms + testbenches)
+![Forwarding waveform](docs/images/Forward_to_ALU.png)
+> Simulation waveform showing WB→EX forwarding in action (operand matches `wb_rd_ptr`, forwarded data aligns with the write-back value).
 
-- **`rtl/mmu_simple_v1/`**: includes a flow using an internal block memory primitive (`blk_mem_gen_0`) and a `pc`-driven instruction fetch model, plus some board-oriented debug display logic.
-- **`rtl/mmu_simple_v2/`**: exposes a **unified BRAM interface** at the top-level (`bram_data`, `bram_addr`, `bram_we`, `reset_busy`) to support external multiplexing between an instruction loader and the CPU core.
+![Write-back waveform](docs/images/Register_Write_Back.png)
+> Simulation waveform illustrating write-back behavior and destination register updates across pipeline stages.
 
-If you’re starting fresh, `mmu_simple_v2` is generally the easier top-level to integrate into a larger system because the instruction source can be swapped without rewriting the core pipeline.
-
----
-
-## Verification & simulation
-
-The repo contains both **block-level testbenches** and a **top-level integration testbench**. Common locations:
+Testbench locations:
 
 - **Unit testbenches**: `rtl/mmu_simple_v*/Multimedia_Processor_Unit_VHDL/**/verification/*.vhd`
 - **Top-level**: `rtl/mmu_simple_v*/Multimedia_Processor_Unit_VHDL/Multimedia_Processor_Unit_tb*.vhd`
 
 In `mmu_simple_v2`, the top-level Vivado testbench (`Multimedia_Processor_Unit_tb_vivado.vhd`) includes an example of dumping register contents to a text file (e.g., `register_file.txt`) after a run.
 
----
-
-## Repository layout (RTL-first)
-
-```
-rtl/
-├── mmu_simple_v1/
-│   ├── Multimedia_Processor_Unit_VHDL/   — Core RTL + verification
-│   └── hardware_report/                  — Implementation reports (timing/power/utilization)
-├── mmu_simple_v2/
-│   ├── Multimedia_Processor_Unit_VHDL/   — Core RTL + verification + constraints.xdc
-│   ├── USART_Unit_VHDL/                  — UART/USART support blocks + TB
-│   ├── instruction_loader.vhd            — Loader-side integration (BRAM write path)
-│   └── Processor_Controller.vhd          — Control integration logic
-└── *.asm / assembler.cpp / tests         — Assembly tests and tooling
-```
+### Synthesis (RTL view)
+![Synopsys RTL](docs/diagrams/synposis_rtl.png)
+> Synthesis-oriented RTL hierarchy view showing the main instantiated blocks and top-level connectivity.
 
 ---
 
