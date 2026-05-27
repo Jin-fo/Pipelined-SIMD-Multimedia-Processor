@@ -11,7 +11,7 @@ ser = serial.Serial(PORT, BAUD, timeout=1)
 time.sleep(2)  # allow FPGA/FTDI to reset after connection
 
 # Read instructions from file
-with open('src/instruction_file.txt', 'r') as f:
+with open('rtl/instruction_file.txt', 'r') as f:
     instructions = f.readlines()
 
 # Send each instruction byte by byte

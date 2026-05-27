@@ -26,8 +26,8 @@ begin
 		
 		if reset_bar = '0' then 
 			wback <= '0'; 
-			wb_rd 	  <= (others => '-');
-			wb_rd_ptr <= (others => '-');
+			wb_rd 	  <= (others => '0');
+			wb_rd_ptr <= (others => '0');
 		elsif rising_edge(clk) then 
 			if enable = '1' then
 				wback 	<= ex_wback;

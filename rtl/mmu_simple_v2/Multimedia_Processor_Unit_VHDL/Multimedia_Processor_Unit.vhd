@@ -17,7 +17,8 @@ entity Multimedia_Processor_Unit is
 	reset_busy  : out std_logic;
 	
 	reg_tog   : in std_logic;
-	reg_pos    : in std_logic_vector(7 downto 0);
+	reg_adr    : in std_logic_vector(4 downto 0);
+	reg_seg    : in std_logic_vector(2 downto 0);
 	reg_value  : out std_Logic_vector(15 downto 0)
 	);
 end Multimedia_Processor_Unit;
@@ -118,13 +119,13 @@ begin
 
 	I_FILE : entity work.instruction_file(behavior)
 		port map (
-			clk         => clk,
-			reset_bar   => reset_bar,
-			in_addr    =>  bram_addr,
-			in_instruc  => bram_data,
-			wr_enable   => bram_we,
-			out_instruc => if_instruc,
-			reset_busy  => reset_busy
+        clk          => clk,
+        reset_bar    => reset_bar,
+        in_addr      =>  bram_addr,
+        in_instruc   => bram_data,
+        wr_enable    => bram_we,
+        out_instruc  => if_instruc,
+        reset_busy   => reset_busy
 		);
 
     IF_ID : entity work.if_id(behavior)
@@ -141,16 +142,16 @@ begin
 	D_CODE : entity work.decoder(behavior) 
 		port map (		
 		--input
-		instruc  => id_instruc,
+		instruc   => id_instruc,
 		
 		--outputs(data)
-		opcode	=> id_opcode,
-		rs3_ptr	=> id_rs3_ptr,
-		rs2_ptr	=> id_rs2_ptr,
-		rs1_ptr	=> id_rs1_ptr,
-		rd_ptr	=> id_rd_ptr,
-		immed	=> id_immed,
-		read_sel   	=> read_sel,
+		opcode	  => id_opcode,
+		rs3_ptr	  => id_rs3_ptr,
+		rs2_ptr	  => id_rs2_ptr,
+		rs1_ptr	  => id_rs1_ptr,
+		rd_ptr	  => id_rd_ptr,
+		immed	  => id_immed,
+		read_sel  => read_sel,
 		
 		--controls(data)
 		wback	=> id_wback);	
@@ -158,7 +159,8 @@ begin
 	R_File : entity work.register_file(behavior)
 		port map (
 		reg_tog     => reg_tog,
-		reg_pos     => reg_pos,
+		reg_adr     => reg_adr,
+		reg_seg     => reg_seg,
 		reg_value   => reg_value,
 		--inputs(data)
 		clk         => clk,

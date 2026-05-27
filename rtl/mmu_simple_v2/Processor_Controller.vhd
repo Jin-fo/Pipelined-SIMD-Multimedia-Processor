@@ -141,7 +141,8 @@ begin
 
         -- runtime outputs
         reg_tog   => reg_tog,
-        reg_pos    => reg_pos,
+        reg_adr    => reg_pos(7 downto 3),
+        reg_seg    => reg_pos(2 downto 0),
         reg_value  => reg_value,
 
         reset_busy => rst_busy

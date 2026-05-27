@@ -20,7 +20,7 @@ begin
 		--variable var_instruc : std_logic_vector(INSTRUCTION_LENGTH-1 downto 0);
 	begin 
 		if reset_bar = '0' then
-			id_instruc <= (others => '-');
+			id_instruc <= (others => '0');
 		elsif rising_edge(clk) then	
 			if enable = '1' then
 				id_instruc <= if_instruc;

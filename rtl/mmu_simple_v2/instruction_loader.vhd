@@ -28,7 +28,6 @@ architecture behavior of instruction_loader is
     signal byte_count : integer range 0 to 3 := 0;
 
     signal addr_reg   : unsigned(COUNTER_LENGTH-1 downto 0) := (others => '0');
-    signal instr_reg  : std_logic_vector(INSTRUCTION_LENGTH-1 downto 0) := (others => '0');
 
     signal we_reg     : std_logic := '0';
     signal done_reg   : std_logic := '0';
@@ -46,7 +45,6 @@ begin
                 shift_reg  <= (others => '0');
                 byte_count <= 0;
                 addr_reg   <= (others => '0');
-                instr_reg  <= (others => '0');
                 we_reg     <= '0';
                 done_reg   <= '0';
 
@@ -69,7 +67,6 @@ begin
                         ----------------------------------------------------------------
                         -- WRITE TO BRAM
                         ----------------------------------------------------------------
-                        instr_reg <= shift_reg(16 downto 0) & rx_data;
                         bram_data <= shift_reg(16 downto 0) & rx_data;
                         bram_addr <= std_logic_vector(addr_reg);
                         we_reg    <= '1';

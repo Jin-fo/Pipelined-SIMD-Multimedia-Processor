@@ -44,16 +44,16 @@ begin
 	id_ex : process (reset_bar, clk, enable)
 	begin
 		if reset_bar = '0' then 
-			ex_opcode 	<=  (others => '-');
-			ex_rs3      <= (others => '-');
-			ex_rs2      <= (others => '-');
-			ex_rs1      <= (others => '-');
-			ex_immed    <= (others => '-');
+			ex_opcode 	<= (others => '0');
+			ex_rs3      <= (others => '0');
+			ex_rs2      <= (others => '0');
+			ex_rs1      <= (others => '0');
+			ex_immed    <= (others => '0');
 			
-			ex_rs3_ptr  <= (others => '-');
-			ex_rs2_ptr  <= (others => '-');
-			ex_rs1_ptr  <= (others => '-');
-			ex_rd_ptr   <= (others => '-');
+			ex_rs3_ptr  <= (others => '0');
+			ex_rs2_ptr  <= (others => '0');
+			ex_rs1_ptr  <= (others => '0');
+			ex_rd_ptr   <= (others => '0');
 			
 			ex_wback    <= '0';
 		elsif rising_edge(clk) then

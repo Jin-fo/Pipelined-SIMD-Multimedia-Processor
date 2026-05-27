@@ -9,7 +9,8 @@ entity register_file is
 
         -- IO signals
         reg_tog    : in std_logic;
-        reg_pos   : in std_logic_vector(7 downto 0);  -- [7:3]=reg select, [2:0]=segment select
+        reg_adr    : in std_logic_vector(4 downto 0);  -- 5-bit address select, 
+        reg_seg    : in std_logic_vector(2 downto 0);  -- 3-bit segment select
         reg_value : out std_logic_vector(15 downto 0);
 
         -- Decoded inputs
@@ -41,34 +42,37 @@ architecture behavior of register_file is
     signal tog_sync_0       : std_logic := '0';
     signal tog_sync_1       : std_logic := '0';
     signal tog_sync_prev    : std_logic := '0';
-    signal reg_pos_latched  : std_logic_vector(7 downto 0) := (others => '0');
+    signal reg_adr_ltch     : std_logic_vector(4 downto 0) := (others => '0');
+    signal reg_seg_ltch     : std_logic_vector(2 downto 0) := (others => '0');
+   
 
 begin
     ---------------------------------------------------------------------
     -- Debug read (16-bit slice) with 2-flop synchronizer for reg_tog
     ---------------------------------------------------------------------
-    debug_sync : process(clk)
+    rising_edge_tog : process(clk)
     begin
         if rising_edge(clk) then
             tog_sync_0 <= reg_tog;
             tog_sync_1 <= tog_sync_0;
             if (tog_sync_1 = '1' and tog_sync_prev = '0') then
-                reg_pos_latched <= reg_pos;
+                reg_adr_ltch <= reg_adr;
+                reg_seg_ltch <= reg_seg;
             end if;
             tog_sync_prev <= tog_sync_1;
         end if;
-    end process debug_sync;
+    end process;
 
-    process(reg_pos_latched, REG_FILE)
-        variable v_reg_idx  : integer;
+    process(reg_adr_ltch, reg_seg_ltch, REG_FILE)
+        variable v_adr_idx  : integer;
         variable v_seg_idx  : integer;
         variable v_seg_base : integer;
         variable v_reg      : std_logic_vector(REGISTER_LENGTH-1 downto 0);
     begin
-        v_reg_idx := to_integer(unsigned(reg_pos_latched(7 downto 3)));
-        v_seg_idx := to_integer(unsigned(reg_pos_latched(2 downto 0)));
+        v_adr_idx := to_integer(unsigned(reg_adr_ltch));
+        v_seg_idx := to_integer(unsigned(reg_seg_ltch));
 
-        v_reg := REG_FILE(v_reg_idx);
+        v_reg := REG_FILE(v_adr_idx);
         v_seg_base := v_seg_idx * 16; 
         reg_value <= v_reg(v_seg_base + 15 downto v_seg_base);
         
