@@ -4,17 +4,12 @@
 <div align="center">
 
 [![HDL - VHDL](https://img.shields.io/badge/HDL-VHDL-blue?style=for-the-badge)](https://en.wikipedia.org/wiki/VHDL)
+[![Design - RTL](https://img.shields.io/badge/RTL-gray?style=for-the-badge)](https://en.wikipedia.org/wiki/Logic_simulation)
 [![Pipeline - 4%20Stage](https://img.shields.io/badge/Pipeline-4%20Stage-teal?style=for-the-badge)](https://en.wikipedia.org/wiki/Instruction_pipelining)
 [![FPGA - Artix-7](https://img.shields.io/badge/FPGA-Artix--7-red?style=for-the-badge)](https://www.xilinx.com/products/silicon-devices/fpga/artix-7.html)
 [![Board - Basys3](https://img.shields.io/badge/Board-Basys3-green?style=for-the-badge)](https://digilent.com/reference/programmable-logic/basys-3/start)
 [![Tool - Vivado](https://img.shields.io/badge/Tool-Vivado-orange?style=for-the-badge)](https://www.xilinx.com/products/design-tools/vivado.html)
-<<<<<<< HEAD
-[![Sim - RTL](https://img.shields.io/badge/Sim-RTL-gray?style=for-the-badge)](https://en.wikipedia.org/wiki/Logic_simulation)
-[![Verify - Passed](https://img.shields.io/badge/Verify-Passed-76B900?style=for-the-badge)](https://en.wikipedia.org/wiki/Testbench)
 [![Loader - USART](https://img.shields.io/badge/Loader-USART-brightgreen?style=for-the-badge)](rtl/mmu_simple_v2/USART_Unit_VHDL/USART_unit.vhd)
-=======
-[![FPGA - RTL%20Simulation](https://img.shields.io/badge/FPGA-RTL%20Simulation-gray?style=for-the-badge)](https://en.wikipedia.org/wiki/Logic_simulation)
->>>>>>> 7acc525 (Update README.md)
 
 **May 2026 | Jin Yuan Chen**
 
