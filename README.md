@@ -111,18 +111,14 @@ This keeps the EX datapath readable while allowing the instruction set to be ext
 > Simulation waveform showing WB→EX forwarding in action (operand matches `wb_rd_ptr`, forwarded data aligns with the write-back value).
 
 
-Testbench locations:
+**Test-Bench** — bottom-up RTL simulation (VHDL testbenches):
 
-| Label | Path | What it exercises |
-|-------|------|-------------------|
-| **v1 — stage unit tests** | `rtl/mmu_simple_v1/**/verification/*_tb.vhd` | IF/ID/EX/WB blocks in isolation (`pc`, `instruction_file`, `if_id`, `register_file`, `id_ex`, `ex_wb`, MMU ops) |
-| **v2 — stage unit tests** | `rtl/mmu_simple_v2/mmu_cpu/**/verification/*_tb.vhd` | Same pipeline stages for the v2 `mmu_cpu` hierarchy |
-| **v2 — USART loader** | `rtl/mmu_simple_v2/usart_rx/verification/USART_unit_tb.vhd` | UART RX / program-load path for terminal programming |
-| **v1 — full pipeline (sim)** | `sim/tb/mmu_simple_v1/Multimedia_Processor_Unit_tb.vhd` | End-to-end IF→WB on the v1 core |
-| **v1 — full pipeline (Vivado)** | `sim/tb/mmu_simple_v1/Multimedia_Processor_Unit_tb_vivado.vhd` | Same as above, Vivado-oriented stimulus / timing |
-| **v2 — full pipeline (sim)** | `rtl/mmu_simple_v2/mmu_cpu/Multimedia_Processor_Unit_tb.vhd` | End-to-end IF→WB on the v2 core (RTL-only top) |
-| **v2 — full pipeline (Vivado)** | `rtl/mmu_simple_v2/mmu_cpu/Multimedia_Processor_Unit_tb_vivado.vhd` | v2 core integration for Vivado simulation |
-| **v2 — FPGA system top** | `sim/tb/mmu_simple_v2/Processor_Controller_tb.vhd` | Board-level wrapper: CPU + BRAM mux + USART load FSM |
+| Level | Where | What was validated |
+|-------|--------|-------------------|
+| **Block** | `rtl/mmu_simple_v*/**/verification/` | Each pipeline stage and MMU opcode group in isolation |
+| **Core** | `sim/tb/mmu_simple_v1/`, `rtl/mmu_simple_v2/mmu_cpu/*_tb.vhd` | Full 4-stage IF→WB datapath (v1 & v2) |
+| **Peripheral** | `rtl/mmu_simple_v2/usart_rx/verification/` | UART program loader |
+| **System** | `sim/tb/mmu_simple_v2/Processor_Controller_tb.vhd` | FPGA top: CPU + memory + USART load FSM |
 
 ### Synthesis (RTL view)
 ![Synopsys RTL](docs/diagrams/synposis_rtl.png)
