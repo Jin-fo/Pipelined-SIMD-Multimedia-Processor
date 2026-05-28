@@ -1,0 +1,102 @@
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2025 Advanced Micro Devices, Inc. All Rights Reserved.
+---------------------------------------------------------------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2025.2 (win64) Build 6299465 Fri Nov 14 19:35:11 GMT 2025
+| Date         : Tue May 26 19:03:57 2026
+| Host         : DESKTOP-CQ5O7VM running 64-bit major release  (build 9200)
+| Command      : report_control_sets -verbose -file Processor_Controller_control_sets_placed.rpt
+| Design       : Processor_Controller
+| Device       : xc7a35t
+---------------------------------------------------------------------------------------------------------------------------------------------
+
+Control Set Information
+
+Table of Contents
+-----------------
+1. Summary
+2. Histogram
+3. Flip-Flop Distribution
+4. Detailed Control Set Information
+
+1. Summary
+----------
+
++----------------------------------------------------------+-------+
+|                          Status                          | Count |
++----------------------------------------------------------+-------+
+| Total control sets                                       |    24 |
+|    Minimum number of control sets                        |    19 |
+|    Addition due to synthesis replication                 |     5 |
+|    Addition due to physical synthesis replication        |     0 |
+| Unused register locations in slices containing registers |    77 |
++----------------------------------------------------------+-------+
+* Control sets can be merged at opt_design using control_set_merge or merge_equivalent_drivers
+** Run report_qor_suggestions for automated merging and remapping suggestions
+
+
+2. Histogram
+------------
+
++--------------------+-------+
+|       Fanout       | Count |
++--------------------+-------+
+| Total control sets |    24 |
+| >= 0 to < 4        |     8 |
+| >= 4 to < 6        |     1 |
+| >= 6 to < 8        |     2 |
+| >= 8 to < 10       |     2 |
+| >= 10 to < 12      |     1 |
+| >= 12 to < 14      |     0 |
+| >= 14 to < 16      |     1 |
+| >= 16              |     9 |
++--------------------+-------+
+* Control sets can be remapped at either synth_design or opt_design
+
+
+3. Flip-Flop Distribution
+-------------------------
+
++--------------+-----------------------+------------------------+-----------------+--------------+
+| Clock Enable | Synchronous Set/Reset | Asynchronous Set/Reset | Total Registers | Total Slices |
++--------------+-----------------------+------------------------+-----------------+--------------+
+| No           | No                    | No                     |              10 |            5 |
+| No           | No                    | Yes                    |               1 |            1 |
+| No           | Yes                   | No                     |              14 |            5 |
+| Yes          | No                    | No                     |              55 |           18 |
+| Yes          | No                    | Yes                    |             630 |          359 |
+| Yes          | Yes                   | No                     |              29 |            6 |
++--------------+-----------------------+------------------------+-----------------+--------------+
+
+
+4. Detailed Control Set Information
+-----------------------------------
+
++----------------+----------------------------------------+-----------------------+------------------+----------------+--------------+
+|  Clock Signal  |              Enable Signal             |    Set/Reset Signal   | Slice Load Count | Bel Load Count | Bels / Slice |
++----------------+----------------------------------------+-----------------------+------------------+----------------+--------------+
+|  clk_IBUF_BUFG | USART/DATA_RX/shift[6]_i_1_n_0         |                       |                1 |              1 |         1.00 |
+|  clk_IBUF_BUFG | USART/DATA_RX/shift[1]_i_1_n_0         |                       |                1 |              1 |         1.00 |
+|  clk_IBUF_BUFG | USART/DATA_RX/shift[5]_i_1_n_0         |                       |                1 |              1 |         1.00 |
+|  clk_IBUF_BUFG | USART/DATA_RX/shift[2]_i_1_n_0         |                       |                1 |              1 |         1.00 |
+|  clk_IBUF_BUFG | USART/DATA_RX/shift[4]_i_1_n_0         |                       |                1 |              1 |         1.00 |
+|  clk_IBUF_BUFG | USART/DATA_RX/shift[3]_i_1_n_0         |                       |                1 |              1 |         1.00 |
+|  clk_IBUF_BUFG | USART/DATA_RX/shift[0]_i_1_n_0         |                       |                1 |              1 |         1.00 |
+|  clk_IBUF_BUFG | USART/DATA_RX/shift[7]_i_1_n_0         |                       |                1 |              1 |         1.00 |
+|  clk_IBUF_BUFG | CNTRL_FSM/uart_OBUF                    | MMU_CPU/ID_EX/rst_bar |                1 |              4 |         4.00 |
+|  clk_IBUF_BUFG | INSTRUC_LDR/addr_reg[0]                | MMU_CPU/ID_EX/rst_bar |                1 |              6 |         6.00 |
+|  clk_IBUF_BUFG | P_C/pc.count[0]                        | MMU_CPU/ID_EX/rst_bar |                2 |              6 |         3.00 |
+|  clk_IBUF_BUFG | MMU_CPU/R_File/reg_adr_ltch[4]_i_1_n_0 |                       |                2 |              8 |         4.00 |
+|  clk_IBUF_BUFG | USART/DATA_RX/rx_data[7]_i_1_n_0       |                       |                1 |              8 |         8.00 |
+|  clk_IBUF_BUFG |                                        |                       |                5 |             11 |         2.20 |
+|  clk_IBUF_BUFG |                                        | MMU_CPU/ID_EX/rst_bar |                6 |             15 |         2.50 |
+|  clk_IBUF_BUFG | USART/DATA_RX/ready_reg_0[0]           | MMU_CPU/ID_EX/rst_bar |                4 |             19 |         4.75 |
+|  clk_IBUF_BUFG | MMU_CPU/EX_WB/wback_reg_rep__3_0       |                       |                3 |             24 |         8.00 |
+|  clk_IBUF_BUFG | INSTRUC_LDR/bram_addr[5]_i_1_n_0       |                       |                7 |             31 |         4.43 |
+|  clk_IBUF_BUFG | MMU_CPU/EX_WB/wback_reg_rep__1_0       |                       |               13 |            104 |         8.00 |
+|  clk_IBUF_BUFG | MMU_CPU/EX_WB/wback_reg_rep__4_0       |                       |               13 |            104 |         8.00 |
+|  clk_IBUF_BUFG | MMU_CPU/EX_WB/wback_reg_rep_0          |                       |               18 |            140 |         7.78 |
+|  clk_IBUF_BUFG | MMU_CPU/EX_WB/wback_reg_rep__0_0       |                       |               18 |            144 |         8.00 |
+|  clk_IBUF_BUFG | MMU_CPU/EX_WB/wb_wback                 |                       |               22 |            172 |         7.82 |
+|  clk_IBUF_BUFG | CNTRL_FSM/cpu_OBUF                     | MMU_CPU/ID_EX/rst_bar |              357 |            624 |         1.75 |
++----------------+----------------------------------------+-----------------------+------------------+----------------+--------------+
+
+
