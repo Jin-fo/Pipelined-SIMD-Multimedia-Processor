@@ -39,7 +39,7 @@ The emphasis is on **verification-first RTL development**: each stage/block has 
 
 ## Architecture (RTL hierarchy)
 
-The primary top-level entity is `Multimedia_Processor_Unit` (see `rtl/mmu_simple_v2/Multimedia_Processor_Unit_VHDL/Multimedia_Processor_Unit.vhd` and `rtl/mmu_simple_v1/...`).
+The primary top-level entity is `Multimedia_Processor_Unit` (see `rtl/mmu_simple_v2/mmu_cpu/Multimedia_Processor_Unit.vhd` and `rtl/mmu_simple_v1/Multimedia_Processor_Unit.vhd`).
 
 At a high level, the core is built as a structural hierarchy:
 
@@ -113,10 +113,8 @@ This keeps the EX datapath readable while allowing the instruction set to be ext
 
 Testbench locations:
 
-- **Unit testbenches**: `rtl/mmu_simple_v*/Multimedia_Processor_Unit_VHDL/**/verification/*.vhd`
-- **Top-level**: `rtl/mmu_simple_v*/Multimedia_Processor_Unit_VHDL/Multimedia_Processor_Unit_tb*.vhd`
-
-In `mmu_simple_v2`, the top-level Vivado testbench (`Multimedia_Processor_Unit_tb_vivado.vhd`) includes an example of dumping register contents to a text file (e.g., `register_file.txt`) after a run.
+- **Unit testbenches**: `rtl/mmu_simple_v1/**/verification/*_tb.vhd` and `rtl/mmu_simple_v2/mmu_cpu/**/verification/*_tb.vhd` (USART: `rtl/mmu_simple_v2/usart_rx/verification/USART_unit_tb.vhd`)
+- **Top-level integration**: `sim/tb/mmu_simple_v1/Multimedia_Processor_Unit_tb*.vhd`, `sim/tb/mmu_simple_v2/Processor_Controller_tb.vhd`, and `rtl/mmu_simple_v2/mmu_cpu/Multimedia_Processor_Unit_tb*.vhd`
 
 ### Synthesis (RTL view)
 ![Synopsys RTL](docs/diagrams/synposis_rtl.png)
