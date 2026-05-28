@@ -103,11 +103,13 @@ This keeps the EX datapath readable while allowing the instruction set to be ext
 ## Synthesis & verification
 
 ### Verification (waveforms + testbenches)
-![Forwarding waveform](docs/images/Forward_to_ALU.png)
-> Simulation waveform showing WB→EX forwarding in action (operand matches `wb_rd_ptr`, forwarded data aligns with the write-back value).
 
 ![Write-back waveform](docs/images/Register_Write_Back.png)
 > Simulation waveform illustrating write-back behavior and destination register updates across pipeline stages.
+
+![Forwarding waveform](docs/images/Forward_to_ALU.png)
+> Simulation waveform showing WB→EX forwarding in action (operand matches `wb_rd_ptr`, forwarded data aligns with the write-back value).
+
 
 Testbench locations:
 
