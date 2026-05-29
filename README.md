@@ -18,7 +18,7 @@
 ---
 
 <p align="center">
-  <img src="docs/diagrams/simple_mmu_rtl.png" alt="Simple MMU Structural RTL" style="max-width:100%; height:auto;"/>
+  <img src="docs/diagrams/mmu_simple_rtl_v1.png" alt="Simple MMU Structural RTL" style="max-width:100%; height:auto;"/>
 </p>
 <p align="center">
   <em>Figure 1: Structural RTL diagram of the 4-stage pipeline datapath (IF/ID/EX/WB) including inter-stage registers, forwarding path, and MMU execution block.</em>
