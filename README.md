@@ -121,7 +121,7 @@ This keeps the EX datapath readable while allowing the instruction set to be ext
 | **System** | `sim/tb/mmu_simple_v2/Processor_Controller_tb.vhd` | FPGA top: CPU + memory + USART load FSM |
 
 ### Synthesis (RTL view)
-![Synopsys RTL](docs/diagrams/synposis_rtl.png)
+![Synopsys RTL](docs/diagrams/mmu_simple_synposis.png)
 > Synthesis-oriented RTL hierarchy view showing the main instantiated blocks and top-level connectivity.
 
 ---
